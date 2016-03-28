@@ -14,6 +14,7 @@
  <context:component-scan base-package="com.kriptoproject.test" />
  <context:component-scan base-package="com.tugas1.controller" />
  <context:component-scan base-package="com.tubes1.controller" />
+ <context:component-scan base-package="com.tucil3.controller" />
  
  <mvc:resources mapping="/resources/**" location="/resources/" />
  <mvc:annotation-driven/>

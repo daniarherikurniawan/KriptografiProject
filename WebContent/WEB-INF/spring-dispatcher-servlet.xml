@@ -16,7 +16,7 @@
  <context:component-scan base-package="com.tubes1.controller" />
  <context:component-scan base-package="com.tucil3.controller" />
  
- <mvc:resources mapping="/resources/**" location="/resources/" />
+ <mvc:resources mapping="/resources/**" location="/resources/css, /resources/js" />
  <mvc:annotation-driven/>
  
  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />

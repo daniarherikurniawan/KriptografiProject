@@ -32,12 +32,12 @@ import object.MessageBlock;
 @Controller
 @RequestMapping("/tucil3")
 public class Tucil3Controller {
-	String path = "/media/daniar/myPassport/WorkPlace/Windows/Steganograph-BPCS/frontend/WebContent/resources/img/";
+	String path = "/home/daniar/documents/KriptografiProject/file/uploaded/";
 	
 	@RequestMapping("/")
 	public ModelAndView Tucil3Controller() {
 
-		ModelAndView model = new ModelAndView("Tubes1Page");
+		ModelAndView model = new ModelAndView("Tucil3Page");
 		model.addObject("msg","Tucil 3");
 		model.addObject("folderLevel","../");
 		return model;
@@ -48,85 +48,31 @@ public class Tucil3Controller {
 	
 	@RequestMapping(value="/execute",  method=RequestMethod.POST)
 	@ResponseBody
-	public String startExecuting(@RequestParam("fileInputUntukDiSisipkan") String filename,
-			@RequestParam("fileInput") String imagename,
-			@RequestParam("capacity") String strCapacity,
-			@RequestParam("operationType") String operationType,
-			@RequestParam("key") String key
+	public String startExecuting(@RequestParam("strKunciPublik") String strKunciPublik,
+			@RequestParam("strKunciPrivat") String strKunciPrivat,
+			@RequestParam("fileInput") String fileInput,
+			@RequestParam("fileKunciPublik") String fileKunciPublik,
+			@RequestParam("fileKunciPrivat") String fileKunciPrivat,
+			@RequestParam("operationType") String operationType
 			) {
-		VigenereCipherExtended VChipExt = new VigenereCipherExtended();
-		Bpcs objBPCS = new Bpcs();
-		int capacity = Integer.parseInt(strCapacity);
-		String result = new String("");
-		
+		String result ="";
 		switch(operationType){
-			case "0": // embed file to image
-				try {
-					String str = filename.length()+" "+filename;
-					byte[] b = str.getBytes();
-			        String pathEncryptedSecretFIle = VChipExt.encryptTubes1( key, path, filename);
-			        Path file_path = Paths.get(pathEncryptedSecretFIle);
-			        byte[] message;
-					message = Files.readAllBytes(file_path);
-//						
-					byte[] bytes = message;
-			        MessageBlock messageblock = new MessageBlock(bytes);
-			        int messageSize = messageblock.getSize() ;
-			        if(messageSize > capacity){
-			        	result = "300";
-			        }else{
-			        	result = objBPCS.insertFile(imagename, path, message, key);
-			        }
-				} catch (IOException e) {
-					result = e.getMessage();
-				} catch (InvalidSizeException e) {
-					result = e.getMessage();
-				}
+			case "0": // bangkitkan kunci
+				result = "from 0";
 				break; 
-			case "1": // get file from image
-				try {
-			        Bpcs bpcs = new Bpcs();
-			        byte[] bytes = bpcs.getFile(path+imagename, key);
-//				        String file_path = "/media/daniar/myPassport/WorkPlace/Windows/Steganograph-BPCS/frontend/WebContent/resources/img/encryptedfileSecret.txt";//scanner.nextLine();
-//				        Path path2 = Paths.get(file_path);
-
-//						byte[] message = Files.readAllBytes(path2);
-			        // input message file path
-			        FileUtils.writeByteArrayToFile(new File(path+"encryptedResult"+filename), bytes);
-			        
-					result =  VChipExt.decryptTubes1( key, path,"encryptedResult"+filename);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			case "1": // enkripsi
+				result = "from 1";
+			
+				break; 
+			case "2": // dekripsi
+				result = "from 2";
+			
 				break; 
 			default: 
 		}
 		return result;
 	}
 
-	@RequestMapping(value="/compareimage",  method=RequestMethod.POST)
-	@ResponseBody
-	public String compareImage(
-			@RequestParam("fileInput") String imagename
-			) {
-		VigenereCipherExtended VChipExt = new VigenereCipherExtended();
-		Bpcs objBPCS = new Bpcs();
-		String result = objBPCS.compareImage(path+imagename, path+"New"+imagename);
-		return result;
-	}
-	
-	@RequestMapping(value="/checkcapacity",  method=RequestMethod.POST)
-	@ResponseBody
-	public String checkCapacity( @RequestParam("fileInput") String imagename
-			) {
-		VigenereCipherExtended VChipExt = new VigenereCipherExtended();
-		Bpcs objBPCS = new Bpcs();
-		String result = objBPCS.checkCapacity(path+imagename);
-		return result;
-	}
-	
-	
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     @ResponseBody
     public String handleFileUpload(@RequestParam("name") String name,
@@ -136,7 +82,7 @@ public class Tucil3Controller {
             	
                 byte[] bytes = file.getBytes();
                 FileUtils.writeByteArrayToFile(new File(path+name), bytes);
-//	                System.out.println(getClass().getResource());
+	                System.out.println(file.getOriginalFilename()); 
                
                 return "You successfully uploaded " + name + "!";
             } catch (Exception e) {

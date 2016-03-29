@@ -101,13 +101,6 @@ public class Tugas1Controller {
 	    return result;
 	}
 	
-	@RequestMapping(value="/upload", method=RequestMethod.GET)
-    public @ResponseBody ModelAndView provideUploadInfo() {
-
-		ModelAndView model = new ModelAndView("upload");
-		return model;
-    }
-
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     @ResponseBody
     public String handleFileUpload(@RequestParam("name") String name,

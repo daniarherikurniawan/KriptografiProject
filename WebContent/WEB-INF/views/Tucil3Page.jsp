@@ -24,9 +24,9 @@
 						    	<div class="form-group">
 							        <form id="formUploadKunciPublik" style="margin-top:5px"
 							         method="POST" enctype="multipart/form-data" action="upload">
-										<div class="col-md-2" style="padding-left:0px;">
+										<div class="col-md-3" style="padding-left:0px;">
 											<a class='btn btn-default' href='javascript:;'>
-									            Choose File
+									            Choose Public Key
 									            <input required type="file" name="file" 
 									            style='position:absolute;z-index:2;top:0;left:0;filter: 
 									            alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -34,7 +34,7 @@
 									            onchange='$("#file-kunci-publik").html($(this).val().replace(/C:\\fakepath\\/i,""));'>
 									        </a>
 										</div>
-										<div class="col-md-7">
+										<div class="col-md-6">
 							    			<textarea required  name="name" id="file-kunci-publik"  rows="1" maxlength="25"  style="padding: 6px 12px; width:100%;
 							    			 border-radius: 4px;" placeholder="Input a new filename!"></textarea>
 										</div>
@@ -58,9 +58,9 @@
 								<div id="textarea_feedback_private_key"></div>
 							        <form id="formUploadKunciPrivat" style="margin-top:5px"
 							         method="POST" enctype="multipart/form-data" action="upload">
-										<div class="col-md-2" style="padding-left:0px;">
+										<div class="col-md-3" style="padding-left:0px;">
 											<a class='btn btn-default' href='javascript:;'>
-									            Choose File
+									            Choose Private Key
 									            <input required type="file" name="file" 
 									            style='position:absolute;z-index:2;top:0;left:0;filter: 
 									            alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -68,7 +68,7 @@
 									            onchange='$("#file-kunci-privat").html($(this).val().replace(/C:\\fakepath\\/i,""));'>
 									        </a>
 										</div>
-										<div class="col-md-7">
+										<div class="col-md-6">
 							    			<textarea required  name="name" id="file-kunci-privat"  rows="1" maxlength="25"  style="padding: 6px 12px; width:100%;
 							    			 border-radius: 4px;" placeholder="Input a new filename!"></textarea>
 										</div>
@@ -130,8 +130,7 @@
 							        <form id="formUploadFile" style="margin-top:5px"
 							         method="POST" enctype="multipart/form-data" action="upload">
 									
-									<div class="col-md-2">
-										<button type="submit"  class="btn btn-default" >Download </button>
+									<div class="col-md-2" id="downloadPlainText">
 	                    			</div>
 									</form>
 								</div>
@@ -151,8 +150,7 @@
 							        <form id="formUploadFile" style="margin-top:5px"
 							         method="POST" enctype="multipart/form-data" action="upload">
 									
-									<div class="col-md-2">
-										<button type="submit"  class="btn btn-default" >Download </button>
+									<div class="col-md-2" id="downloadCipherText" >
 	                    			</div>
 									</form>
 								</div>
@@ -263,11 +261,26 @@
 	    
 	    http1.send((params));
 	    http1.onload = function() {
-	    	alert(http1.responseText);
-	    	if(idOperasi==0){
-         		
-         	}else{ 
-	  	   
+	    	result = JSON.parse(http1.responseText);
+	    	alert(result.msg);
+     		document.getElementById("cipherText").innerHTML = "";
+     		document.getElementById("downloadCipherText").innerHTML = "";
+     		document.getElementById("plainText").innerHTML = "";
+     		document.getElementById("downloadPlainText").innerHTML = "";
+	    	if(result.success){
+		    	if(idOperasi==1){
+	         		document.getElementById("plainText").innerHTML = result.data;
+	         		document.getElementById("downloadPlainText").innerHTML = "<a type=\"btn\" href=\"files/"+result.filename
+	         		+"/"+result.filetype+"\"  download=\""+result.filename+"\" title=\"ImageName\">"
+					  +"<button type=\"button\"class=\"btn btn-info\">Download Plain Text</button></a>";
+		         	
+	         	}else if(idOperasi==2){
+	         		document.getElementById("cipherText").innerHTML = result.data;
+	         		document.getElementById("downloadCipherText").innerHTML = "<a type=\"btn\" href=\"files/"+result.filename
+	         		+"/"+result.filetype+"\"  download=\""+result.filename+"\" title=\"ImageName\">"
+					  +"<button type=\"button\"class=\"btn btn-info\">Download Plain Text</button></a>";
+		         	
+		    	}
 	    	}
 	      }
 	    }

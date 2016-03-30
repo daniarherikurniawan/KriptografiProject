@@ -41,7 +41,7 @@ import object.MessageBlock;
 @Controller
 @RequestMapping("/tucil3")
 public class Tucil3Controller {
-	String path = "/home/daniar/documents/KriptografiProject/file/";
+	public static String path = "/home/daniar/documents/KriptografiProject/file/";
 	
 	@RequestMapping("/")
 	public ModelAndView Tucil3Controller() {
@@ -82,15 +82,24 @@ public class Tucil3Controller {
 					parameterIsComplete = true;
 				
 				if (parameterIsComplete){
+					long startTime = System.nanoTime();
 					/*Processing*/
-					
-					
+					ArrayList<Integer> listInt = readFile(path+"uploaded/"+fileInput);
+					System.out.println(listInt.size());
+					try {
+					    Thread.sleep(1000);                 //1000 milliseconds is one second.
+					} catch(InterruptedException ex) {
+					    Thread.currentThread().interrupt();
+					}
+					/*end of processing*/
+					long endTime = System.nanoTime();
+					long duration = (endTime - startTime)/1000000;
 					
 					dataResult = "encryption result (harusnya hexadecimal)";
 					msg = "Encryption is finish!";
 					result.put("filename", "encryptionResult");
-					result.put("executionTime", "20 ms");
-					result.put("fileSize", "13 KB");
+					result.put("executionTime", duration+" ms");
+					result.put("fileSize", listInt.size()/1000+" KB");
 					result.put("filetype", "txt");
 				}else{
 					msg = "Please complete the parameter! [Kunci Publik dan File Input] and specify the key whether from file or input";
@@ -103,12 +112,24 @@ public class Tucil3Controller {
 					parameterIsComplete = true;
 				
 				if (parameterIsComplete){
+					long startTime = System.nanoTime();
 					/*Processing*/
+					ArrayList<Integer> listInt = readFile(path+"uploaded/"+fileInput);
+					System.out.println(listInt.size());
+					try {
+					    Thread.sleep(2000);                 //1000 milliseconds is one second.
+					} catch(InterruptedException ex) {
+					    Thread.currentThread().interrupt();
+					}
+					/*end of processing*/
+					long endTime = System.nanoTime();
+					long duration = (endTime - startTime)/1000000;
+					
 					dataResult = "decryption result";
 					msg = "Decryption is finish!";
 					result.put("filename", "decryptionResult");
-					result.put("executionTime", "20 ms");
-					result.put("fileSize", "13 KB");
+					result.put("executionTime", duration+" ms");
+					result.put("fileSize", listInt.size()/1000+" KB");
 					result.put("filetype", "txt");
 				}else{
 					msg = "Please complete the parameter! [Kunci Privat dan File Input] and specify the key whether from file or input";

@@ -68,8 +68,7 @@ public class Tubes1Controller {
 			        byte[] message;
 					message = Files.readAllBytes(file_path);
 //					
-					byte[] bytes = message;
-			        MessageBlock messageblock = new MessageBlock(bytes);
+			        MessageBlock messageblock = new MessageBlock(message);
 			        int messageSize = messageblock.getSize() ;
 			        if(messageSize > capacity){
 			        	result = "300";

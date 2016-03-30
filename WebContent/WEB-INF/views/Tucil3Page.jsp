@@ -262,12 +262,12 @@
 	    http1.send((params));
 	    http1.onload = function() {
 	    	result = JSON.parse(http1.responseText);
-	    	alert(result.msg);
      		document.getElementById("cipherText").innerHTML = "";
      		document.getElementById("downloadCipherText").innerHTML = "";
      		document.getElementById("plainText").innerHTML = "";
      		document.getElementById("downloadPlainText").innerHTML = "";
 	    	if(result.success){
+		    	alert(result.msg +"\nExecution Time :"+result.executionTime+"\nFile Size :"+result.fileSize);
 		    	if(idOperasi==1){
 	         		document.getElementById("plainText").innerHTML = result.data;
 	         		document.getElementById("downloadPlainText").innerHTML = "<a type=\"btn\" href=\"files/"+result.filename
@@ -279,8 +279,10 @@
 	         		document.getElementById("downloadCipherText").innerHTML = "<a type=\"btn\" href=\"files/"+result.filename
 	         		+"/"+result.filetype+"\"  download=\""+result.filename+"\" title=\"ImageName\">"
 					  +"<button type=\"button\"class=\"btn btn-info\">Download Plain Text</button></a>";
-		         	
 		    	}
+	    	}else{
+
+		    	alert(result.msg);
 	    	}
 	      }
 	    }

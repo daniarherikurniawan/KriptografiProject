@@ -1,8 +1,10 @@
 package com.tucil3.controller;
 
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,9 +83,14 @@ public class Tucil3Controller {
 				
 				if (parameterIsComplete){
 					/*Processing*/
-					dataResult = "encryption result";
+					
+					
+					
+					dataResult = "encryption result (harusnya hexadecimal)";
 					msg = "Encryption is finish!";
 					result.put("filename", "encryptionResult");
+					result.put("executionTime", "20 ms");
+					result.put("fileSize", "13 KB");
 					result.put("filetype", "txt");
 				}else{
 					msg = "Please complete the parameter! [Kunci Publik dan File Input] and specify the key whether from file or input";
@@ -100,6 +107,8 @@ public class Tucil3Controller {
 					dataResult = "decryption result";
 					msg = "Decryption is finish!";
 					result.put("filename", "decryptionResult");
+					result.put("executionTime", "20 ms");
+					result.put("fileSize", "13 KB");
 					result.put("filetype", "txt");
 				}else{
 					msg = "Please complete the parameter! [Kunci Privat dan File Input] and specify the key whether from file or input";
@@ -163,6 +172,62 @@ public class Tucil3Controller {
         }
     }
     
-    
+    public ArrayList<Integer> readFile(String path){
+		FileInputStream fis = null;
+		ArrayList<Integer> myList = new ArrayList<Integer>();
+    	try {
+			fis = new FileInputStream(path);
+			int content;
+			while ((content = fis.read()) != -1) {
+	            myList.add(content);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fis != null)
+					fis.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return myList;
+	}
+   
+    public void writeEncryptedFile(ArrayList<Integer> myList , String filename){
+		BufferedOutputStream bos;
+		try {
+			bos = new BufferedOutputStream(
+			        new FileOutputStream(new File(path + "encrypted"+filename)));
+			for (int i = 0; i < myList.size(); i++) {
+            	bos.write(myList.get(i).intValue());
+    		}
+	        bos.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeDecryptedFile(ArrayList<Integer> myList , String filename){
+		BufferedOutputStream bos;
+		try {
+			bos = new BufferedOutputStream(
+			        new FileOutputStream(new File(path + "decrypted"+filename)));
+			for (int i = 0; i < myList.size(); i++) {
+            	bos.write(myList.get(i).intValue());
+    		}
+	        bos.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
     
 }
